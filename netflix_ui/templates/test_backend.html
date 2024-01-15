@@ -1,0 +1,19 @@
+<{% extends 'base.html' %}>
+{% load static %}
+{% block title %} Test {% endblock %}
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+{% block content %}
+    <p>Test page</p>
+    {% if data %}
+        <p>Data from backend:</p>
+        <ul>
+            {% for key, value in data.items %}
+                <li>{{ key }}: {{ value }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Error fetching data from backend.</p>
+    {% endif %}
+{% endblock %}

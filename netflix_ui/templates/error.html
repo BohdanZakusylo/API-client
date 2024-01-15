@@ -1,0 +1,11 @@
+<{% extends 'base.html' %}>
+{% load static %}
+{% block title %} Error {% endblock %}
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+{% block content %}
+    <h1>An unexpected error occurred</h1>
+    <h3>Error {{ error_code }}</h3>
+    <p>{{ error_msg }}</p>
+{% endblock %}
