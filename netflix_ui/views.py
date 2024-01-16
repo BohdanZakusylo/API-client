@@ -30,7 +30,7 @@ def test_backend(request):
         data = get("/").json()
     except requests.RequestException as e:
         data = {'error': str(e)}
-        return render(request, "error.html", {'error_code': 500, 'error_msg': 'Server error'})
+       # return render(request, "error.html", {'error_code': 500, 'error_msg': 'Server error'})
     return render(request, "test_backend.html", {"data": data})
 
 
