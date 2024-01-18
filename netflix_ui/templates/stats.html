@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pie Chart Statistics</title>
 </head>
 <body>
+    <h1>Pie Chart Statistics</h1>
 
+    {% if chart_base64 %}
+        <h2>Dub language popularity</h2>
+        <img src="data:image/png;base64, {{ chart_base64 }}" alt="Pie Chart">
+    {% else %}
+        <p>No data available for the pie chart.</p>
+    {% endif %}
 </body>
 </html>

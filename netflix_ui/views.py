@@ -1,9 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.views import View
+from django.shortcuts import render
+from background_task import background
 from .forms import RegistrationForm
 import os
 import requests
+import asyncio
+from dotenv import load_dotenv
+from .utils import fetch_data_and_generate_pie_chart
 
 
 API_SERVER = os.getenv("API_SERVER")
@@ -66,4 +71,23 @@ def registration_view(request):
         form = RegistrationForm()
 
     return render(request, 'registration.html', {'form': form})
+
+
+def pie_chart_view(request):
+    load_dotenv()
+    api_url = "http://127.0.0.1:8000/dubbings-languages/"
+    token = os.getenv("TOKEN")
+
+    # Create an event loop and run the asynchronous function
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    chart_base64 = loop.run_until_complete(fetch_data_and_generate_pie_chart(api_url, token))
+
+    # Pass data to the template
+    context = {"chart_base64": chart_base64}
+
+    # Render the template with the pie chart
+    return render(request, "stats.html", context)
+
+
 
