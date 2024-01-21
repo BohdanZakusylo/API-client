@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
 import httpx
-
+from datetime import datetime
 plt.switch_backend('Agg')
 
 async def fetch_data_and_generate_pie_chart(api_url, token):
@@ -35,4 +35,13 @@ async def generate_pie_chart(values, labels):
 
     chart_base64 = base64.b64encode(chart_image.read()).decode("utf-8")
     return chart_base64
+
+async def get_registration_dates_from_database(api_url, token):
+    async with httpx.AsyncClient() as client:
+        response = await client.get(api_url + f"?token={token}")
+
+        data = response.json()
+        print(data)
+
+        return data
 
