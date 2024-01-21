@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+    <div>
+        <a href='{% url 'index' %}'>
+            <img src='{% static 'img/logo.png' %}' alt='logo' class='logo'>
+        </a>
+    </div>
+    <a href="{% url 'login' %}" class="signup-button">Sign Up Now</a>
+{% endblock %}
+
+{% block content %}
+    <div class="background-image">
+        <h2>Welcome to Netflix!</h2>
+    </div>
+{% endblock %}

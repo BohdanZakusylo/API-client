@@ -38,7 +38,7 @@ async def post(api_server, end_point, headers=headers, data={}):
 '''
 
 def index(request):
-    return HttpResponse("Hello world!")
+    return render(request, "home.html")
 
 
 def test_backend(request):
