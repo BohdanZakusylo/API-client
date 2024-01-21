@@ -12,6 +12,9 @@ headers = {
 if not API_SERVER:
     raise EnvironmentError("no API_SERVER defined in .env")
 
+def set_token_in_session(request, token):
+    request.session['my_token'] = token
+    return HttpResponse("Token set in session.")
 
 '''
 async def get(url, headers=headers, params={}):
@@ -39,15 +42,15 @@ def index(request):
 
 
 def test_backend(request):
+    print(request.session.get('registration_data'))
     API_SERVER = os.getenv("API_SERVER")
     if not API_SERVER:
         raise EnvironmentError("no API_SERVER defined")
     try:
-        data = requests.get(API_SERVER+"/", headers=headers).json()
+        data = requests.get(f"{API_SERVER}/")
     except requests.HTTPError as e:
         data = {'error': str(e)}
-       # return render(request, "error.html", {'error_code': 500, 'error_msg': 'Server error'})
-    return render(request, "test_backend.html", {"data": data})
+    return render(request, "test_backend.html", {"data": "Cleint is connected to the backend"})
 
 
 def error_view(request, error_code, error_msg):
@@ -72,13 +75,11 @@ def registration_view(request):
                 "email": email,
                 "age": age
             }
-            print(data)
             response = requests.post(API_SERVER + '/registration', headers=headers, json=data)
             response_data = response.json()
+            request.session['registration_data'] = response_data
+            registration_data = request.session.get('registration_data')
             return render(request, 'registration.html', {'token': response_data})
-            if 'token' in headers.keys() and 'token' in response_data:
-                headers.update({'token': response_data['token']})
-                return render(request, 'registration.html', {'token': response_data['token']})
 
     else:
         form = RegistrationForm()
