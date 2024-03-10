@@ -16,7 +16,7 @@ from django.db import connection
 
 API_SERVER = os.getenv("API_SERVER")
 headers = {
-    "Content-Type": "application/json"
+    "accept": "application/json"
 }
 if not API_SERVER:
     raise EnvironmentError("no API_SERVER defined in .env")
@@ -79,14 +79,16 @@ def registration_view(request):
             age = form.cleaned_data['age']
             headers={"Content-Type": "application/json"}
             data = {
-                "username": username,
-                "password": password,
                 "email": email,
+                "password": password,
+                "username": username,
                 "age": age
             }
             response = requests.post(API_SERVER + '/registration', headers=headers, json=data)
+            print(f"{response.text}")
             response_data = response.json()
-            request.session['registration_data'] = response_data
+            print(f"reponse data kdsklsf{response_data}")
+            request.session['registration_data'] = response_data["token"]
             registration_data = request.session.get('registration_data')
             return render(request, 'registration.html', {'token': response_data})
 
